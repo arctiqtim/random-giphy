@@ -21,7 +21,7 @@ data:
 EOF
 
 kubectl create secret docker-registry regcred \
-                    --namespace beer \
+                    --namespace random-giphy \
                     --docker-server=registry-docker-registry.registry.svc.cluster.local:5000 \
                     --docker-username=admin \
                     --docker-password=Arct1q \

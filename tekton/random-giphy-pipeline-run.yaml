@@ -1,11 +1,11 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
 metadata:
-  generateName: pipeline-run-beer-
-  namespace: beer
+  generateName: pipeline-run-random-giphy-
+  namespace: random-giphy
 spec:
   pipelineRef:
-    name: beer-pipeline
+    name: random-giphy-pipeline
   resources:
     - name: git-source
       resourceRef:
@@ -17,5 +17,5 @@ spec:
     - name: targetBranch
       value: "master"
     - name: imageTag
-      value: "7"
+      value: "v1.0"
   serviceAccount: arctiqtim-git-ssh

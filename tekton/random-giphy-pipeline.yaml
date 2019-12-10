@@ -1,8 +1,8 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
-  name: beer-pipeline
-  namespace: beer
+  name: random-giphy-pipeline
+  namespace: random-giphy
 spec:
   resources:
     - name: git-source
@@ -31,7 +31,7 @@ spec:
       - name: pathToContext
         value: "."
       - name: imageUrl
-        value: "registry.arctiqtim.anthos.labs.arctiq.ca/beer/beer-giphy"
+        value: "registry.arctiqtim.anthos.labs.arctiq.ca/random-giphy/random-giphy"
       - name: imageTag
         value: "$(params.imageTag)"
     resources:
@@ -43,7 +43,7 @@ spec:
       name: commit-to-deploy
     params:
       - name: imageUrl
-        value: "registry.arctiqtim.anthos.labs.arctiq.ca/beer/beer-giphy"
+        value: "registry.arctiqtim.anthos.labs.arctiq.ca/random-giphy/random-giphy"
       - name: imageTag
         value: "$(params.imageTag)"
       - name: targetBranch

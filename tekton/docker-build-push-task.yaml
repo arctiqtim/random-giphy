@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
   name: docker-build-push
-  namespace: beer
+  namespace: random-giphy
 spec:
   inputs:
     resources:

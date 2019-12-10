@@ -3,11 +3,11 @@ apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
   name: git-deploy
-  namespace: beer
+  namespace: random-giphy
 spec:
   type: git
   params:
   - name: revision
     value: master
   - name: url
-    value: git@github.com:arctiqtim/beer-giphy-deploy.git
+    value: git@github.com:arctiqtim/random-giphy-deploy.git

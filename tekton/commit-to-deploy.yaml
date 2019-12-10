@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
   name: commit-to-deploy
-  namespace: beer
+  namespace: random-giphy
 spec:
   inputs:
     resources:
@@ -55,13 +55,13 @@ spec:
       image: gcr.io/arctiqteam-images/kustomizer:v3.4.4
       workingDir: /workspace/git-deploy
       command: 
-        - "sleep"
-        - "36000"
-        # - "git"
-        # - "push"
-        # - "-u"
-        # - "origin"
-        # - "$(inputs.params.targetBranch)"
+        # - "sleep"
+        # - "36000"
+        - "git"
+        - "push"
+        - "-u"
+        - "origin"
+        - "$(inputs.params.targetBranch)"
       volumeMounts:
       - name: gitcreds
         mountPath: "/opt/ssh/"
