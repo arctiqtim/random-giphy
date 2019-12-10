@@ -1,0 +1,67 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: commit-to-deploy
+  namespace: beer
+spec:
+  inputs:
+    resources:
+      - name: git-deploy
+        type: git
+    params:
+      - name: imageUrl
+        description: Url of image repository
+      - name: imageTag
+        description: Tag to apply to the built image
+        default: "latest"
+      - name: targetBranch
+        description: The target branch to push to for deployment
+  volumes:
+  - name: gitconfig
+    configMap:
+      name: gitconfig
+  - name: gitcreds
+    secret:
+      secretName: git-ssh
+      defaultMode: 0600
+  steps:
+    - name: kustomize-image
+      image: gcr.io/arctiqteam-images/kustomizer:v3.3.4
+      workingDir: /workspace/git-deploy
+      args:
+        - "edit"
+        - "set"
+        - "image"
+        - "$(inputs.params.imageUrl):$(inputs.params.imageTag)"
+    - name: git-add
+      image: gcr.io/arctiqteam-images/kustomizer:v3.3.4
+      workingDir: /workspace/git-deploy
+      command: 
+        - "git"
+        - "add"
+        - "*"
+    - name: git-commit
+      image: gcr.io/arctiqteam-images/kustomizer:v3.3.4
+      workingDir: /workspace/git-deploy
+      command: 
+        - "git"
+        - "commit"
+        - "-m"
+        - "change to image $(inputs.params.imageTag)"
+      volumeMounts:
+      - name: gitconfig
+        mountPath: "/builder/home/"
+    - name: git-push
+      image: gcr.io/arctiqteam-images/kustomizer:v3.4.4
+      workingDir: /workspace/git-deploy
+      command: 
+        - "sleep"
+        - "36000"
+        # - "git"
+        # - "push"
+        # - "-u"
+        # - "origin"
+        # - "$(inputs.params.targetBranch)"
+      volumeMounts:
+      - name: gitcreds
+        mountPath: "/opt/ssh/"

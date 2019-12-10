@@ -1,0 +1,54 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: beer-pipeline
+  namespace: beer
+spec:
+  resources:
+    - name: git-source
+      type: git
+    - name: git-deploy
+      type: git
+  params:
+    - name: pathToContext
+      description: The path to the build context, used by Kaniko - within the workspace
+      default: src
+    - name: imageUrl
+      description: Url of image repository
+    - name: imageTag
+      description: Tag to apply to the built image
+    - name: pathToDockerFile
+      description: The path to the dockerfile to build (relative to the context)
+    - name: pathToContext
+      description: The path to the build context, used by Kaniko - within the workspace
+    - name: targetBranch
+      description: The target branch to push to for deployment
+  tasks:
+  - name: beer-build
+    taskRef:
+      name: docker-build-push
+    params:
+      - name: pathToContext
+        value: "."
+      - name: imageUrl
+        value: "registry.arctiqtim.anthos.labs.arctiq.ca/beer/beer-giphy"
+      - name: imageTag
+        value: "$(params.imageTag)"
+    resources:
+      inputs:
+        - name: git-source
+          resource: git-source
+  - name: beer-deploy
+    taskRef:
+      name: commit-to-deploy
+    params:
+      - name: imageUrl
+        value: "registry.arctiqtim.anthos.labs.arctiq.ca/beer/beer-giphy"
+      - name: imageTag
+        value: "$(params.imageTag)"
+      - name: targetBranch
+        value: "$(params.targetBranch)"
+    resources:
+      inputs:
+        - name: git-deploy
+          resource: git-deploy

@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  generation: 1
+  name: beer-giphy
+spec:
+  destination:
+    namespace: beer
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: .
+    repoURL: git@github.com:arctiqtim/beer-giphy-deploy.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

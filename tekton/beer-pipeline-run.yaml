@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  generateName: pipeline-run-beer-
+  namespace: beer
+spec:
+  pipelineRef:
+    name: beer-pipeline
+  resources:
+    - name: git-source
+      resourceRef:
+        name: git-source
+    - name: git-deploy
+      resourceRef:
+        name: git-deploy
+  params:
+    - name: targetBranch
+      value: "master"
+    - name: imageTag
+      value: "7"
+  serviceAccount: arctiqtim-git-ssh
