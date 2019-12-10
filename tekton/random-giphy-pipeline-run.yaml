@@ -17,5 +17,5 @@ spec:
     - name: targetBranch
       value: "master"
     - name: imageTag
-      value: "v1.3"
+      value: "v1.4"
   serviceAccount: arctiqtim-git-ssh
